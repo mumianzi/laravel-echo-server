@@ -1,0 +1,41 @@
+{
+	"authHost": "http://cac.stanzhou.lan",
+	"authEndpoint": "/broadcasting/auth",
+	"clients": [
+		{
+			"appId": "xxxx",
+			"key": "xxxxx"
+		},
+		{
+			"appId": "xxxx",
+			"key": "xxxxx"
+		}
+	],
+	"database": "redis",
+	"databaseConfig": {
+		"redis": {
+			"port": "6381",
+			"host": "127.0.0.1",
+			"password": ""
+		},
+		"sqlite": {
+			"databasePath": "/database/laravel-echo-server.sqlite"
+		}
+	},
+	"devMode": true,
+	"host": null,
+	"port": "6003",
+	"protocol": "http",
+	"socketio": {},
+	"sslCertPath": "",
+	"sslKeyPath": "",
+	"sslCertChainPath": "",
+	"sslPassphrase": "",
+	"apiOriginAllow": {
+		"allowCors": true,
+		"allowOrigin": "*",
+		"allowMethods": "GET, POST",
+		"allowHeaders": "Origin, Content-Type, X-Auth-Token, X-Requested-With, Accept, Authorization,Auth-Type, X-Socket-Id"
+	},
+    "unEveryEvents": ["presence-user.online.app","presence-user.online.pc"]
+}

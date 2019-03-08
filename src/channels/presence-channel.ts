@@ -1,7 +1,7 @@
 var _ = require('lodash');
-import { Channel } from './channel';
-import { Database } from './../database';
-import { Log } from './../log';
+import {Channel} from './channel';
+import {Database} from './../database';
+import {Log} from './../log';
 
 export class PresenceChannel {
     /**
@@ -150,6 +150,9 @@ export class PresenceChannel {
      * @return {void}
      */
     onJoin(socket: any, channel: string, member: any): void {
+        if (this.isTriggerEvent(channel)) {
+            return;
+        }
         this.io
             .sockets
             .connected[socket.id]
@@ -166,6 +169,10 @@ export class PresenceChannel {
      * @return {void}
      */
     onLeave(channel: string, member: any): void {
+        if (this.isTriggerEvent(channel)) {
+            return;
+        }
+
         this.io
             .to(channel)
             .emit('presence:leaving', channel, member);
@@ -180,8 +187,19 @@ export class PresenceChannel {
      * @return {void}
      */
     onSubscribed(socket: any, channel: string, members: any[]) {
+        if (this.isTriggerEvent(channel)) {
+            return;
+        }
         this.io
             .to(socket.id)
             .emit('presence:subscribed', channel, members);
+    }
+
+    /**
+     *
+     * @param channel
+     */
+    isTriggerEvent(channel: string): boolean {
+        return this.options.unEveryEvents && _.indexOf(this.options.unEveryEvents, channel) !== false;
     }
 }

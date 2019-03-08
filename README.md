@@ -322,3 +322,17 @@ _Note: When using the socket.io client library from your running server, remembe
 #### µWebSockets deprecation
 
 µWebSockets has been [officially deprecated](https://www.npmjs.com/package/uws). Currently there is no support for µWebSockets in Socket.IO, but it may have the new [ClusterWS](https://www.npmjs.com/package/@clusterws/cws) support incoming. Meanwhile Laravel Echo Server will use [`ws` engine](https://www.npmjs.com/package/ws) by default until there is another option.
+
+
+## 单文件打包
+```
+安装 pkg
+npm install -g pkg
+打包所有平台
+pkg . 
+打包 alpine 
+pkg -t node6-alpine-x64 
+
+帮助
+pkg --help
+```
