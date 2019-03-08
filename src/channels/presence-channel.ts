@@ -150,7 +150,7 @@ export class PresenceChannel {
      * @return {void}
      */
     onJoin(socket: any, channel: string, member: any): void {
-        if (this.isTriggerEvent(channel)) {
+        if (!this.isTriggerEvent(channel)) {
             return;
         }
         this.io
@@ -169,7 +169,7 @@ export class PresenceChannel {
      * @return {void}
      */
     onLeave(channel: string, member: any): void {
-        if (this.isTriggerEvent(channel)) {
+        if (!this.isTriggerEvent(channel)) {
             return;
         }
 
@@ -187,7 +187,7 @@ export class PresenceChannel {
      * @return {void}
      */
     onSubscribed(socket: any, channel: string, members: any[]) {
-        if (this.isTriggerEvent(channel)) {
+        if (!this.isTriggerEvent(channel)) {
             return;
         }
         this.io
@@ -200,6 +200,7 @@ export class PresenceChannel {
      * @param channel
      */
     isTriggerEvent(channel: string): boolean {
-        return this.options.unEveryEvents && _.indexOf(this.options.unEveryEvents, channel) !== false;
+
+        return !this.options.unEveryEvents || _.indexOf(this.options.unEveryEvents, channel) < 0;
     }
 }
