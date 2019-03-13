@@ -1,7 +1,7 @@
 let request = require('request');
 let url = require('url');
-import { Channel } from './channel';
-import { Log } from './../log';
+import {Channel} from './channel';
+import {Log} from './../log';
 
 export class PrivateChannel {
     /**
@@ -30,7 +30,7 @@ export class PrivateChannel {
     authenticate(socket: any, data: any): Promise<any> {
         let options = {
             url: this.authHost(socket) + this.options.authEndpoint,
-            form: { channel_name: data.channel },
+            form: {channel_name: data.channel},
             headers: (data.auth && data.auth.headers) ? data.auth.headers : {},
             rejectUnauthorized: false
         };
@@ -68,7 +68,8 @@ export class PrivateChannel {
                     authHostSelected = `${referer.protocol}//${referer.host}`;
                     break;
                 }
-            };
+            }
+            ;
         }
 
         return authHostSelected;
@@ -106,14 +107,17 @@ export class PrivateChannel {
                         Log.error(error);
                     }
 
-                    reject({ reason: 'Error sending authentication request.', status: 0 });
+                    reject({reason: 'Error sending authentication request.', status: 0});
                 } else if (response.statusCode !== 200) {
                     if (this.options.devMode) {
                         Log.warning(`[${new Date().toLocaleTimeString()}] - ${socket.id} could not be authenticated to ${options.form.channel_name}`);
                         Log.error(response.body);
                     }
 
-                    reject({ reason: 'Client can not be authenticated, got HTTP status ' + response.statusCode, status: response.statusCode });
+                    reject({
+                        reason: 'Client can not be authenticated, got HTTP status ' + response.statusCode,
+                        status: response.statusCode
+                    });
                 } else {
                     if (this.options.devMode) {
                         Log.info(`[${new Date().toLocaleTimeString()}] - ${socket.id} authenticated for: ${options.form.channel_name}`);
@@ -141,6 +145,18 @@ export class PrivateChannel {
     protected prepareHeaders(socket: any, options: any): any {
         options.headers['Cookie'] = options.headers['Cookie'] || socket.request.headers.cookie;
         options.headers['X-Requested-With'] = 'XMLHttpRequest';
+        options.headers['User-Agent'] = options.headers['User-Agent'] || socket.request.headers.userAgent;
+        if (socket.request.headers['x-forwarded-for']) {
+            options.headers['x-forwarded-for'] = socket.request.headers['x-forwarded-for'];
+        }
+        if (socket.request.headers['x-real-ip']) {
+            options.headers['x-real-ip'] = socket.request.headers['x-real-ip'];
+        }
+
+        if (this.options.devMode) {
+            console.log(`[${new Date().toLocaleTimeString()}] - ${socket.id} request-header:`, socket.request.headers);
+        }
+
 
         return options.headers;
     }

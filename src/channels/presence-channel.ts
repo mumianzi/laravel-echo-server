@@ -99,6 +99,10 @@ export class PresenceChannel {
             this.getMembers(channel).then(members => {
                 members = members || [];
                 member.socketId = socket.id;
+
+                //先过滤掉已经存在的，避免重复
+                members = members.filter(m => m.socketId != member.socketId);
+
                 members.push(member);
 
                 this.db.set(channel + ':members', members);
