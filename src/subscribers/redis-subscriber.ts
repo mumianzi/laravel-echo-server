@@ -1,3 +1,4 @@
+
 var Redis = require('ioredis');
 import { Log } from './../log';
 import { Subscriber } from './subscriber';
@@ -16,7 +17,8 @@ export class RedisSubscriber implements Subscriber {
      * @param {any} options
      */
     constructor(private options) {
-        this._redis = new Redis(options.databaseConfig.redis);
+        let redisOption = (typeof options.subscribers.redis === "object") ? options.subscribers.redis : options.databaseConfig.redis;
+        this._redis = new Redis(redisOption);
     }
 
     /**

@@ -153,6 +153,8 @@ export class PrivateChannel {
             options.headers['x-real-ip'] = socket.request.headers['x-real-ip'];
         }
 
+        options.headers['X-Socket-Id'] = options.headers['X-Socket-Id'] || socket.id;
+
         if (this.options.devMode) {
             console.log(`[${new Date().toLocaleTimeString()}] - ${socket.id} request-header:`, socket.request.headers);
         }
